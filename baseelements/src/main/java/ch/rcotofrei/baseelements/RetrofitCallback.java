@@ -39,15 +39,13 @@ public abstract class RetrofitCallback<S> implements Callback<S> {
 
     }
 
-    private void onSuccess(@NonNull Call<S> call, @NonNull Response<S> response) {
-        addData(BaseConstants.RESPONSE_BODY, response.body());
+    protected void onSuccess(@NonNull Call<S> call, @NonNull Response<S> response) {
     }
 
-    private void onNotSuccess(@NonNull Call<S> call, @NonNull Response<S> response) {
-
+    protected void onNotSuccess(@NonNull Call<S> call, @NonNull Response<S> response) {
     }
 
-    private <K> void addData(String key, K value) {
+    protected <K> void addData(String key, K value) {
         Bundle bundle = callbackHelper.getBundle();
         if (value instanceof String) {
             bundle.putString(key, (String) value);
@@ -64,5 +62,10 @@ public abstract class RetrofitCallback<S> implements Callback<S> {
         } else {
             throw new ClassCastException("Type " + value.getClass().getName() + " is not supported yet");
         }
+    }
+
+    protected void addSerializable(String key, Serializable value) {
+        Bundle bundle = callbackHelper.getBundle();
+        bundle.putSerializable(key, value);
     }
 }
